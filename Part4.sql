@@ -1,21 +1,14 @@
-# What are all the types of pokemon that a pokemon can have?
-SELECT name as "all pokemon types"
-FROM pokemon.types;
+# Return a list of all pokemon sorted from strongest to weakest
+SELECT pkmns.name as "Pokemon Name", trnrs.trainername as "Trainer Name", pkmn_trnrs.pokelevel as "Level", tps1.name as "Primary Type", tps2.name as "Secondary Type"
+FROM pokemon.trainers trnrs
+       JOIN pokemon.pokemon_trainer pkmn_trnrs
+            ON trnrs.trainerID = pkmn_trnrs.trainerID
+       JOIN pokemon.pokemons pkmns
+            ON pkmns.id = pkmn_trnrs.pokemon_id
+       JOIN pokemon.types tps1
+            ON pkmns.primary_type = tps1.id
+       LEFT JOIN pokemon.types tps2
+            ON pkmns.secondary_type = tps2.id
+ORDER BY pkmn_trnrs.pokelevel DESC, tps1.id DESC, pkmns.name ASC, trnrs.trainername ASC;
 
-# What is the name of the pokemon with id 45?
-SELECT name as "name of pokemon with id 45"
-FROM pokemon.pokemons
-WHERE id = 45;
-
-# How many pokemon are there?
-SELECT COUNT(1) as "number of pokemon"
-FROM pokemon.pokemons;
-
-# How many types are there?
-SELECT COUNT(1) as "number of pokemon types"
-FROM pokemon.types;
-
-# How many pokemon have a secondary type?
-SELECT COUNT(1) as "number of pokemon with secondary type"
-FROM pokemon.pokemons
-WHERE secondary_type IS NOT NULL;
+# To find the best, I began by sorting by level, then by type, then by pokemon name, then by trainer name
