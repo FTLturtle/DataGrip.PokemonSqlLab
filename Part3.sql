@@ -42,8 +42,7 @@ GROUP BY pt.trainerID;
 
 # How many pokemon only belong to one trainer and no other?
 SELECT COUNT(1) as "number of pokemon who belong to one trainer and no other"
-FROM
-(SELECT COUNT(1)
-FROM pokemon.pokemon_trainer pt
-GROUP BY pt.pokemon_id
-HAVING COUNT(pt.pokemon_id) = 1) PokemonWithOnlyOneTrainer;
+FROM (SELECT pt.pokemon_id
+      FROM pokemon.pokemon_trainer pt
+      GROUP BY pt.pokemon_id
+      HAVING COUNT(pt.pokemon_id) = 1) AS PokemonWithOnlyOneTrainer;
